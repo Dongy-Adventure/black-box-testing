@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const BASE_URL = process.env.URL || "http://localhost:3000";
+const BASE_URL = process.env.URL || "https://tarsmarketplace.vercel.app/";
 
 test("Has Title", async ({ page }) => {
   await page.goto(BASE_URL);
