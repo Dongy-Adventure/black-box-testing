@@ -31,3 +31,19 @@ test("Register confirm password wrong", async ({ page, authPage }) => {
 
   await expect(usernameError).toBeVisible();
 });
+
+test("Login successfully!", async ({ page, authPage }) => {
+  await authPage.goto();
+
+  await authPage.login("JohnDoe", "Test_1234");
+
+  await expect(page).toHaveURL(/\/profile/);
+});
+
+test("Login username or password is incorrect!", async ({ page, authPage }) => {
+  await authPage.goto();
+
+  await authPage.login("abcd", "Test_1234");
+
+  await expect(page).toHaveURL(authPage.baseUrl);
+});

@@ -39,4 +39,21 @@ export class AuthPage {
       console.log("No registration form found. Skipping.");
     }
   }
+
+  async login(username: string, password: string) {
+    await this.page.click('button:has-text("Sign In")');
+
+    const signInnHeader = this.page.locator("h2", {
+      hasText: "Sign In",
+    });
+
+    if (await signInnHeader.isVisible()) {
+      await this.page.getByTestId("username").fill(username);
+      await this.page.getByTestId("password").fill(password);
+
+      await this.page.click('button:has-text("Sign In")');
+    } else {
+      console.log("No registration form found. Skipping.");
+    }
+  }
 }
