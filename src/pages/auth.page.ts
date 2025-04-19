@@ -18,11 +18,16 @@ export class AuthPage {
     password: string,
     name: string,
     surname: string,
-    confirmPassword: string
+    confirmPassword: string,
+    userType: number
   ) {
     const registrationHeader = this.page.locator("h2", {
       hasText: "Register",
     });
+
+    if (userType === 1) {
+      await this.page.click('button:has-text("Seller")');
+    }
 
     if (await registrationHeader.isVisible()) {
       const imagePath = path.resolve(__dirname, "../assets/test-avatar.png");
@@ -40,8 +45,12 @@ export class AuthPage {
     }
   }
 
-  async login(username: string, password: string) {
+  async login(username: string, password: string, userType: number) {
     await this.page.click('button:has-text("Sign In")');
+
+    if (userType === 1) {
+      await this.page.click('button:has-text("Seller")');
+    }
 
     const signInnHeader = this.page.locator("h2", {
       hasText: "Sign In",
