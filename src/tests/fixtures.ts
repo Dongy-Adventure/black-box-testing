@@ -2,7 +2,7 @@ import { test as base, Browser, Page } from "@playwright/test";
 import { AuthPage } from "../pages/auth.page";
 import { ProductPage } from "../pages/product.page";
 import { OrderPage } from "../pages/order.page";
-import { AdvertisementPage } from "../pages/advertisement.page";
+import { IdentityManagementPage } from "../pages/identity-management.page";
 
 type TestFixtures = {
   context: Awaited<ReturnType<Browser["newContext"]>>;
@@ -10,7 +10,7 @@ type TestFixtures = {
   authPage: AuthPage;
   productPage: ProductPage;
   orderPage: OrderPage;
-  advertisementPage: AdvertisementPage;
+  identityManagementPage: IdentityManagementPage;
 };
 
 export const test = base.extend<TestFixtures>({
@@ -39,7 +39,7 @@ export const test = base.extend<TestFixtures>({
     await use(new OrderPage(page));
   },
 
-  advertisementPage: async ({ page }, use) => {
-    await use(new AdvertisementPage(page));
+  identityManagementPage: async ({ page }, use) => {
+    await use(new IdentityManagementPage(page));
   },
 });
