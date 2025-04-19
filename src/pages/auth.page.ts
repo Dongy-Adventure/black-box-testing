@@ -1,18 +1,7 @@
-import { Page } from "@playwright/test";
 import path from "path";
+import { BasePage } from "./base.page";
 
-export class AuthPage {
-  baseUrl = process.env.URL || `http://localhost:3000`;
-  page: Page;
-
-  constructor(page: Page) {
-    this.page = page;
-  }
-
-  async goto() {
-    await this.page.goto(this.baseUrl);
-  }
-
+export class AuthPage extends BasePage {
   async register(
     username: string,
     password: string,

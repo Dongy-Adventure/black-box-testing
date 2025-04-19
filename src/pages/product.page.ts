@@ -1,18 +1,9 @@
-import { Page } from "@playwright/test";
+import { BasePage } from "./base.page";
 
-export class ProductPage {
+export class ProductPage extends BasePage {
   baseUrl = process.env.URL
     ? process.env.URL + "/seller/product-on-display"
     : "http://localhost:3000/seller/product-on-display";
-  page: Page;
-
-  constructor(page: Page) {
-    this.page = page;
-  }
-
-  async goto() {
-    await this.page.goto(this.baseUrl);
-  }
 
   async createProduct(
     name: string,

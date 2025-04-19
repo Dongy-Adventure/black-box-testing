@@ -7,8 +7,11 @@ test.beforeEach(async ({ authPage }) => {
 
 test("Registered buyer succeed!", async ({ page, authPage }) => {
   await authPage.goto();
+
   await authPage.register(
-    "JohnDoe",
+    `JohnDoe${Math.floor(Math.random() * 0xffffff)
+      .toString(16)
+      .padStart(6, "0")}`,
     "Test_1234",
     "John",
     "Doe",
@@ -22,7 +25,9 @@ test("Registered buyer succeed!", async ({ page, authPage }) => {
 test("Registered seller succeed!", async ({ page, authPage }) => {
   await authPage.goto();
   await authPage.register(
-    "JaneDoe",
+    `JaneDoe${Math.floor(Math.random() * 0xffffff)
+      .toString(16)
+      .padStart(6, "0")}`,
     "Test_1234",
     "Jane",
     "Doe",
@@ -43,6 +48,51 @@ test("Register username less than 3 characters", async ({ page, authPage }) => {
   await expect(usernameError).toBeVisible();
 });
 
+test("Register password does not match the standard (character length)", async ({
+  page,
+  authPage,
+}) => {
+  await authPage.goto();
+
+  await authPage.register("abcd", "tes_", "John", "Doe", "tes_", 0);
+
+  const usernameError = page.locator(
+    "text=Password must be at least 8 characters long"
+  );
+
+  await expect(usernameError).toBeVisible();
+});
+
+test("Register password does not match the standard (uppercase letter)", async ({
+  page,
+  authPage,
+}) => {
+  await authPage.goto();
+
+  await authPage.register("abcd", "test_12345", "John", "Doe", "test12345", 0);
+
+  const usernameError = page.locator(
+    "text=Password must contain at least one uppercase letter"
+  );
+
+  await expect(usernameError).toBeVisible();
+});
+
+test("Register password does not match the standard (special character)", async ({
+  page,
+  authPage,
+}) => {
+  await authPage.goto();
+
+  await authPage.register("abcd", "Test12345", "John", "Doe", "Test12345", 0);
+
+  const usernameError = page.locator(
+    "text=Password must contain at least one special character"
+  );
+
+  await expect(usernameError).toBeVisible();
+});
+
 test("Register confirm password wrong", async ({ page, authPage }) => {
   await authPage.goto();
 
@@ -53,10 +103,10 @@ test("Register confirm password wrong", async ({ page, authPage }) => {
   await expect(usernameError).toBeVisible();
 });
 
-test("Login buyer successfully!", async ({ page, authPage }) => {
+test("Login buyer succeed!", async ({ page, authPage }) => {
   await authPage.goto();
 
-  await authPage.login("JohnDoe", "Test_1234", 0);
+  await authPage.login("demo_buyer", "Test_1234", 0);
 
   await expect(page).toHaveURL(/\/profile/);
 
@@ -67,10 +117,10 @@ test("Login buyer successfully!", async ({ page, authPage }) => {
   await expect(manageOrderLink).toBeHidden();
 });
 
-test("Login seller successfully!", async ({ page, authPage }) => {
+test("Login seller succeed!", async ({ page, authPage }) => {
   await authPage.goto();
 
-  await authPage.login("JaneDoe", "Test_1234", 1);
+  await authPage.login("demo_seller", "Test_1234", 1);
 
   await expect(page).toHaveURL(/\/profile/);
 

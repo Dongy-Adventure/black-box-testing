@@ -2,7 +2,7 @@ import { expect } from "@playwright/test";
 import { test } from "./fixtures";
 
 test.beforeEach(async ({ page, authPage }) => {
-  await authPage.login("demo", "Test_1234", 1);
+  await authPage.login("demo_seller", "Test_1234", 1);
   await expect(page).toHaveURL(/\/profile/);
 });
 
@@ -19,6 +19,7 @@ test("Create product succeed!", async ({ page, productPage }) => {
 
   const productNameLocator = page.locator('tr >> text="Playwright"');
   await expect(productNameLocator).toBeVisible();
+  await productPage.deleteProduct("Playwright");
 });
 
 test("Price less than 1!", async ({ page, productPage }) => {
@@ -55,6 +56,14 @@ test("Amount less than 0!", async ({ page, productPage }) => {
 
 test("Update product succeed!", async ({ page, productPage }) => {
   await productPage.goto();
+  await productPage.createProduct(
+    "Playwright",
+    "For Playwright testing only!!!",
+    1,
+    32,
+    ["Electronics"],
+    "red"
+  );
   await productPage.updateProduct(
     "Playwright",
     "For Playwright testing only!!!",
@@ -66,6 +75,7 @@ test("Update product succeed!", async ({ page, productPage }) => {
 
   const productNameLocator = page.locator('tr >> text="Playwright"');
   await expect(productNameLocator).toBeVisible();
+  await productPage.deleteProduct("Playwright");
 });
 
 test("Delete product succeed!", async ({ page, productPage }) => {
